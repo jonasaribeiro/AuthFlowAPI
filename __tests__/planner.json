@@ -1,0 +1,126 @@
+{
+  "users": {
+    "register": {
+      "success": {
+        "statusCode": 201,
+        "data": "Retorna dados do usuário"
+      },
+      "duplicateEmail": {
+        "statusCode": 400,
+        "message": "Email já registrado"
+      },
+      "invalidData": {
+        "statusCode": 400,
+        "message": "Dados inválidos fornecidos"
+      },
+      "missingData": {
+        "statusCode": 400,
+        "message": "Faltam dados necessários"
+      }
+    },
+    "getDetail": {
+      "success": {
+        "statusCode": 200,
+        "data": "Retorna dados do usuário"
+      },
+      "userNotFound": {
+        "statusCode": 404,
+        "message": "Usuário não encontrado"
+      },
+      "invalidUserId": {
+        "statusCode": 400,
+        "message": "ID de usuário inválido"
+      }
+    },
+    "patch": {
+      "success": {
+        "statusCode": 200,
+        "data": "Retorna usuário atualizado"
+      },
+      "userNotFound": {
+        "statusCode": 404,
+        "message": "Usuário não encontrado"
+      },
+      "invalidData": {
+        "statusCode": 400,
+        "message": "Dados inválidos fornecidos"
+      }
+    },
+    "delete": {
+      "success": {
+        "statusCode": 200,
+        "message": "Usuário deletado com sucesso"
+      },
+      "userNotFound": {
+        "statusCode": 404,
+        "message": "Usuário não encontrado"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "success": {
+        "statusCode": 200,
+        "token": "Retorna token de acesso"
+      },
+      "invalidCredentials": {
+        "statusCode": 401,
+        "message": "Credenciais inválidas"
+      },
+      "missingData": {
+        "statusCode": 400,
+        "message": "Faltam dados necessários"
+      }
+    },
+    "logout": {
+      "success": {
+        "statusCode": 200,
+        "message": "Logout bem-sucedido"
+      }
+    },
+    "refresh": {
+      "success": {
+        "statusCode": 200,
+        "token": "Retorna novo token de acesso"
+      },
+      "invalidToken": {
+        "statusCode": 401,
+        "message": "Token inválido ou expirado"
+      }
+    },
+    "validate": {
+      "success": {
+        "statusCode": 200,
+        "valid": "Retorna validade do token"
+      },
+      "invalidToken": {
+        "statusCode": 401,
+        "message": "Token inválido ou expirado"
+      }
+    },
+    "forgotPassword": {
+      "success": {
+        "statusCode": 200,
+        "message": "Instruções de redefinição enviadas"
+      },
+      "userNotFound": {
+        "statusCode": 404,
+        "message": "Usuário não encontrado"
+      }
+    },
+    "resetPassword": {
+      "success": {
+        "statusCode": 200,
+        "message": "Senha redefinida com sucesso"
+      },
+      "invalidToken": {
+        "statusCode": 400,
+        "message": "Token de redefinição inválido ou expirado"
+      },
+      "missingData": {
+        "statusCode": 400,
+        "message": "Faltam dados necessários"
+      }
+    }
+  }
+}
