@@ -6,7 +6,7 @@ import {
   sUserValidResponse,
 } from "./user.schemas";
 
-type tUser = z.infer<typeof sUser>;
-type tUserRegistrationBody = z.infer<typeof sUserRegistrationBody>;
-type tUserValidResponse = z.infer<typeof sUserValidResponse>;
-type tUserPatchBody = z.infer<typeof sUserPatchBody>;
+export type tUser = z.infer<typeof sUser>;
+export type tUserRegistrationBody = z.infer<typeof sUserRegistrationBody>;
+export type tUserValidResponse = z.infer<typeof sUserValidResponse>;
+export type tUserPatchBody = z.infer<typeof sUserPatchBody>;

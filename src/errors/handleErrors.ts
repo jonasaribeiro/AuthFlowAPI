@@ -1,46 +1,41 @@
 import { NextFunction, Request, Response } from "express";
-import { AppError } from "./CustomErrors";
-
-/**
- * @class ErrorHandler
- * @description Centralized error handling class for the application.
- */
+import * as CustomErrors from "./CustomErrors";
+import { EntityNotFoundError } from "typeorm";
+import { ZodError } from "zod";
 class ErrorHandler {
-  /**
-   * Maps an error to a standardized format.
-   * @param {Error} err - The error object.
-   * @returns {Object} An object containing the status code and message.
-   */
-  private static defaultErrorMapper(err: Error) {
-    // If the error is one of our custom AppErrors, use its status and message.
-    if (err instanceof AppError) {
-      return {
-        status: err.statusCode,
-        message: err.message,
-      };
-    }
-    // For other types of errors, use a generic server error message.
+  private static defaultErrorMapper(err: any) {
     return {
-      status: 500,
-      message: "Internal Server Error.",
+      status: err.statusCode || 500,
+      message: err.message || "Internal Server Error",
     };
   }
 
-  /**
-   * Handles errors and sends appropriate responses to the client.
-   * @param {Error} err - The error object.
-   * @param {Request} _req - The Express Request object.
-   * @param {Response} res - The Express Response object.
-   * @param {NextFunction} _next - The Express NextFunction callback.
-   * @returns {Response} The Express Response object.
-   */
+  private static errorMap: {
+    [key: string]: (err: any) => { status: number; message: any };
+  } = {
+    [CustomErrors.ExpiredTokenError.name]: (err) => ({
+      status: err.statusCode,
+      message: { info: err.message, expiredIn: err.expiredIn },
+    }),
+    [EntityNotFoundError.name]: (err) => ({
+      status: 404,
+      message: err.message,
+    }),
+    [ZodError.name]: (err: ZodError) => ({
+      status: 400,
+      message: err.flatten().fieldErrors,
+    }),
+  };
+
   static async handle(
     err: Error,
-    _req: Request,
+    req: Request,
     res: Response,
     _next: NextFunction
   ) {
-    const errorHandler = ErrorHandler.defaultErrorMapper;
+    const errorType = err.constructor.name;
+    const errorHandler =
+      ErrorHandler.errorMap[errorType] || ErrorHandler.defaultErrorMapper;
     const { status, message } = errorHandler(err);
     return res.status(status).json({ message });
   }
