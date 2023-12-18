@@ -16,6 +16,10 @@
       "missingData": {
         "statusCode": 400,
         "message": "Faltam dados necessários"
+      },
+      "tooMuchRequests": {
+        "statusCode": 429,
+        "message": "Muitas tentativas de acesso"
       }
     },
     "getDetail": {
