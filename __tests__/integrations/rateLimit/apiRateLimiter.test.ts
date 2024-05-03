@@ -11,7 +11,7 @@ describe("General Api Rate Limiter", () => {
     await AppDataSource.destroy();
   });
 
-  it("should now allow more than 20 access attempts", async () => {
+  it("should not allow more than 20 access attempts", async () => {
     for (let i = 1; i <= 20; i++) {
       await request(app).get("/users/id").send();
     }
