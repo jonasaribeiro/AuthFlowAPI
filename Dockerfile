@@ -1,13 +1,23 @@
-FROM node:16
+# Base image
+FROM node:20 AS base
 
-RUN apt-get update && apt-get install -y ffmpeg
-
+# Configuração do diretório de trabalho
 WORKDIR /app
 
-COPY package*.json ./
+# Instalação de dependências
+RUN apt-get update && apt-get install -y ffmpeg postgresql postgresql-contrib
 
+# Instalação de pacotes Node
+COPY package.json .
 RUN npm install
 
+# Copia o restante dos arquivos
 COPY . .
 
-CMD ["node", "index.ts"]
+# Configuração de porta
+ENV PORT=8080
+EXPOSE 8080
+
+# Etapa de desenvolvimento
+FROM base AS development
+CMD ["npm", "install"]
