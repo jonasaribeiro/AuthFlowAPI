@@ -1,12 +1,31 @@
+version: "3.7"
 services:
   app:
-    entrypoint:
-    - sleep
-    - infinity
-    image: docker/dev-environments-javascript:stable-1
-    init: true
+    build:
+      context: .
+      target: development
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://authflowdb:securepassword@db:5432/authflowdb?schema=public
     volumes:
-    - type: bind
-      source: /var/run/docker.sock
-      target: /var/run/docker.sock
+      - .:/app
+      - node_modules:/app/node_modules
 
+  db:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: authflowdb
+      POSTGRES_USER: authflowuser
+      POSTGRES_PASSWORD: securepassword
+    expose:
+      - "5432"
+
+volumes:
+  postgres-data:
+  node_modules:
